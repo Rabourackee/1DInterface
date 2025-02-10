@@ -32,8 +32,8 @@ function setup() {
 
   display = new Display(displaySize, pixelSize);        //Initializing the display
 
-  playerOne = new Player(color(255,0,0), 0, displaySize);   // Initializing players
-  playerTwo = new Player(color(0,0,255), displaySize-1, displaySize);
+  playerOne = new Player(color(200,0,0), 0, displaySize);   // Initializing players
+  playerTwo = new Player(color(0,80, 200), displaySize-1, displaySize);
 
   //target = new Player(color(255,255,0), parseInt(random(0,displaySize)), displaySize);    // Initializing target using the Player class 
 

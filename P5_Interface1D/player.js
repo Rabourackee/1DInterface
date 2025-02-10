@@ -12,6 +12,7 @@ class Player {
         this.displaySize = _displaySize;
         this.attack = false;
         this.build = false;
+        this.bed=true;
     }
 
 
@@ -23,7 +24,7 @@ class Player {
         if (blocks.positionArray[this.position + _direction]==0){
             this.position = this.position + _direction;
         }
-              
+
         // if player hits the edge of display, loop around
         // if (this.position == -1) {
         //     this.position = this.displaySize - 1;

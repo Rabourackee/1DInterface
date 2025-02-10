@@ -25,6 +25,13 @@ class Controller {
                 display.clear();
             
                 // show all players in the right place, by adding them to display buffer
+                if (playerOne.bed==true){
+                    display.setPixel(0, color(255,150,150));
+                }
+                if (playerTwo.bed==true){
+                    display.setPixel(display.displaySize-1, color(170,170,255));
+                }
+
                 display.setPixel(playerOne.position, playerOne.playerColor);
                 display.setPixel(playerTwo.position, playerTwo.playerColor);
 
@@ -38,8 +45,15 @@ class Controller {
                     display.setPixel(playerOne.position +1 ,  color(255,255,255));
                     display.setPixel(playerOne.position -1 ,  color(255,255,255));
 
+                    if (playerOne.position+1==display.displaySize-1){
+                        playerTwo.bed=false;
+                    }
+
                     if (playerOne.position+1==playerTwo.position || playerOne.position-1==playerTwo.position){
-                        playerOne.score++;
+                        playerTwo.position = display.displaySize-1;
+                        if (playerTwo.bed==false){
+                            playerOne.score++;
+                        }
                     }
 
                     if (blocks.positionArray[playerOne.position+1]==1){
@@ -61,8 +75,15 @@ class Controller {
                     display.setPixel(playerTwo.position +1 ,  color(255,255,255));
                     display.setPixel(playerTwo.position -1 ,  color(255,255,255));
 
+                    if (playerTwo.position-1==0){
+                        playerOne.bed=false;
+                    }
+
                     if (playerTwo.position+1==playerOne.position || playerTwo.position-1==playerOne.position){
-                        playerTwo.score++;
+                        playerOne.position = 0;
+                        if (playerOne.bed==false){
+                            playerTwo.score++;
+                        }
                     }
                     
                     if (blocks.positionArray[playerTwo.position+1]==1){
@@ -129,6 +150,8 @@ class Controller {
                 playerTwo.position = display.displaySize-1;
                 
                 blocks.clear();
+                playerOne.bed=true;
+                playerTwo.bed=true;
 
                 // put the target somewhere else, so we don't restart the game with player and target in the same place
                 //target.position = parseInt(random(1,displaySize));
