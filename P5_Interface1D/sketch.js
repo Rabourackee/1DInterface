@@ -22,6 +22,8 @@ let collisionAnimation;   // Where we store and manage the collision animation
 
 let score;        // Where we keep track of score and winner
 
+let blocks;
+
 
 
 function setup() {
@@ -30,10 +32,10 @@ function setup() {
 
   display = new Display(displaySize, pixelSize);        //Initializing the display
 
-  playerOne = new Player(color(255,0,0), parseInt(random(0,displaySize)), displaySize);   // Initializing players
-  playerTwo = new Player(color(0,0,255), parseInt(random(0,displaySize)), displaySize);
+  playerOne = new Player(color(255,0,0), 0, displaySize);   // Initializing players
+  playerTwo = new Player(color(0,0,255), displaySize-1, displaySize);
 
-  target = new Player(color(255,255,0), parseInt(random(0,displaySize)), displaySize);    // Initializing target using the Player class 
+  //target = new Player(color(255,255,0), parseInt(random(0,displaySize)), displaySize);    // Initializing target using the Player class 
 
   collisionAnimation = new Animation();     // Initializing animation
 
@@ -41,6 +43,7 @@ function setup() {
 
   score = {max:3, winner:color(0,0,0)};     // score stores max number of points, and color 
 
+  blocks = new Block(color(100,100,100), displaySize);
 }
 
 function draw() {

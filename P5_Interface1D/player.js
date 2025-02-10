@@ -10,6 +10,8 @@ class Player {
         this.position = _position;
         this.score = 0;
         this.displaySize = _displaySize;
+        this.attack = false;
+        this.build = false;
     }
 
 
@@ -18,13 +20,21 @@ class Player {
     move(_direction) {
 
         // increments or decrements player position
-        this.position = this.position + _direction;
-      
+        if (blocks.positionArray[this.position + _direction]==0){
+            this.position = this.position + _direction;
+        }
+              
         // if player hits the edge of display, loop around
+        // if (this.position == -1) {
+        //     this.position = this.displaySize - 1;
+        // } else if (this.position == this.displaySize) {
+        //     this.position = 0;
+        // } 
+
         if (this.position == -1) {
-            this.position = this.displaySize - 1;
-        } else if (this.position == this.displaySize) {
             this.position = 0;
+        } else if (this.position == this.displaySize) {
+            this.position = this.displaySize-1;
         } 
          
     } 
