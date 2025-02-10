@@ -32,6 +32,8 @@ class Player {
         //     this.position = 0;
         // } 
 
+
+        // if player hit the edge of the display, don't let it go pass or loop around
         if (this.position == -1) {
             this.position = 0;
         } else if (this.position == this.displaySize) {

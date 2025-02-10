@@ -43,7 +43,7 @@ function setup() {
 
   score = {max:3, winner:color(0,0,0)};     // score stores max number of points, and color 
 
-  blocks = new Block(color(100,100,100), displaySize);
+  blocks = new Block(color(100,100,100), displaySize);    // Initializing the blocks
 }
 
 function draw() {

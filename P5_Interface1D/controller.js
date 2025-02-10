@@ -24,7 +24,7 @@ class Controller {
                 // clear screen at frame rate so we always start fresh      
                 display.clear();
             
-                // show all players in the right place, by adding them to display buffer
+                // displaying the beds of players if they exsist
                 if (playerOne.bed==true){
                     display.setPixel(0, color(255,150,150));
                 }
@@ -32,39 +32,51 @@ class Controller {
                     display.setPixel(display.displaySize-1, color(170,170,255));
                 }
 
+                // displaying the positions of the players
                 display.setPixel(playerOne.position, playerOne.playerColor);
                 display.setPixel(playerTwo.position, playerTwo.playerColor);
 
+                // display all the placed blocks
                 for (let i = 0; i < blocks.displaySize; i++){
                     if (blocks.positionArray[i]==1){
                         display.setPixel(i, blocks.blockColor);
                     }
                 }
 
+                // if player one is on the attack mode
                 if (playerOne.attack == true){
+                    // displaying the attcked positions: 2 blocks next to it
                     display.setPixel(playerOne.position +1 ,  color(255,255,255));
                     display.setPixel(playerOne.position -1 ,  color(255,255,255));
 
+                    // destroying the other player's bed if it happens
                     if (playerOne.position+1==display.displaySize-1){
                         playerTwo.bed=false;
                     }
 
+                    // attacking the other player if it is next to this player
                     if (playerOne.position+1==playerTwo.position || playerOne.position-1==playerTwo.position){
+                        // teleport the other player to its bed
                         playerTwo.position = display.displaySize-1;
+                        // add score for this player if the other player have no bed
                         if (playerTwo.bed==false){
                             playerOne.score++;
                         }
                     }
 
+                    // if blocks existing in the attacked positions, destroy them.
                     if (blocks.positionArray[playerOne.position+1]==1){
                         blocks.positionArray[playerOne.position+1]=0;
                     }
                     if (blocks.positionArray[playerOne.position-1]==1){
                         blocks.positionArray[playerOne.position-1]=0;
                     }
+
+                    // leave the attcking mode
                     playerOne.attack = false;
                 }
 
+                // if the play is building a block, set the block position in block array
                 if (playerOne.build == true){
                     blocks.positionArray[playerOne.position-1]=1;
                     playerOne.build = false;
