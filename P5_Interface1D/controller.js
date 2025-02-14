@@ -50,14 +50,16 @@ class Controller {
                     display.setPixel(playerOne.position -1 ,  color(255,255,255));
 
                     // destroying the other player's bed if it happens
-                    if (playerOne.position+1==display.displaySize-1){
+                    if (playerOne.position+1==display.displaySize-1 || playerOne.position+1==display.displaySize){
                         playerTwo.bed=false;
                     }
 
                     // attacking the other player if it is next to this player
                     if (playerOne.position+1==playerTwo.position || playerOne.position-1==playerTwo.position){
                         // teleport the other player to its bed
-                        playerTwo.position = display.displaySize-1;
+                        if(playerTwo.bed==true){
+                            playerTwo.position = display.displaySize-1;
+                        }
                         // add score for this player if the other player have no bed
                         if (playerTwo.bed==false){
                             playerOne.score++;
@@ -87,12 +89,14 @@ class Controller {
                     display.setPixel(playerTwo.position +1 ,  color(255,255,255));
                     display.setPixel(playerTwo.position -1 ,  color(255,255,255));
 
-                    if (playerTwo.position-1==0){
+                    if (playerTwo.position-1==0 || playerTwo.position==0){
                         playerOne.bed=false;
                     }
 
                     if (playerTwo.position+1==playerOne.position || playerTwo.position-1==playerOne.position){
-                        playerOne.position = 0;
+                        if(playerOne.bed==true){
+                            playerOne.position = 0;
+                        }
                         if (playerOne.bed==false){
                             playerTwo.score++;
                         }
