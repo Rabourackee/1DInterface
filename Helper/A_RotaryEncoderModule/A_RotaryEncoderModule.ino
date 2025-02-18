@@ -19,11 +19,13 @@
 
 // Setup a RoraryEncoder for pins A2 and A3:
 RotaryEncoder encoder(A0, A1);
+#define BUTTON_PIN 2 
 
 void setup()
 {
   Serial.begin(57600);
   Serial.println("SimplePollRotator example for the RotaryEncoder library.");
+  pinMode(BUTTON_PIN, INPUT_PULLUP);  // Enable internal pull-up resistor
 } // setup()
 
 
@@ -38,7 +40,11 @@ void loop()
     Serial.print(newPos);
     Serial.println();
     pos = newPos;
-  } // if
+  } 
+  if (digitalRead(BUTTON_PIN) == LOW) {  // Button is pressed (LOW due to pull-up)
+      Serial.println("Button Pressed");
+      delay(200);  // Simple debounce
+  }
 } // loop ()
 
 // The End

@@ -12,13 +12,19 @@ http://www.asciitable.com/
 #include <RotaryEncoder.h> // include rotary encoder library
 
 // Setup a RoraryEncoder for pins A0 and A1:
-RotaryEncoder encoder(A0, A1);
+RotaryEncoder encoder1(A0, A1);
+RotaryEncoder encoder2(A2, A3);
 
 // some useful values
 #define OFF 0
 #define ON 1
 
+
 // start by assuming no buttons are pressed
+// A is the rotery encoder button for player1
+// B is the button for player1
+// X is the rotery encoder button for player2
+// Y is the button for player2
 bool keyA = OFF;
 bool keyB = OFF;
 bool keyX = OFF;
@@ -47,26 +53,49 @@ void loop()
 
   // Read the encoder and output its value
   /////////////////////////////////////////
-  static int pos = 0;
-  encoder.tick();
+  static int pos1 = 0;
+  encoder1.tick();
 
-  int newPos = encoder.getPosition();
-  if (pos != newPos)
+  int newPos1 = encoder1.getPosition();
+  if (pos1 != newPos1)
   {
-    Serial.print(newPos);
+    Serial.print(newPos1);
     Serial.println();
 
-    if (newPos > pos)
+    if (newPos1 > pos1)
     {
-      Keyboard.write(69); // E
+      Keyboard.write(65); // A
     }
 
-    if (newPos < pos)
+    if (newPos1 < pos1)
     {
-      Keyboard.write(70); // F
+      Keyboard.write(68); // D
     }
 
-    pos = newPos;
+    pos1 = newPos1;
+  }
+
+
+  static int pos2 = 0;
+  encoder2.tick();
+
+  int newPos2 = encoder2.getPosition();
+  if (pos2 != newPos2)
+  {
+    Serial.print(newPos2);
+    Serial.println();
+
+    if (newPos2 > pos2)
+    {
+      Keyboard.write(74); // J
+    }
+
+    if (newPos2 < pos2)
+    {
+      Keyboard.write(76); // L
+    }
+
+    pos2 = newPos2;
   }
 
   // All the key presses happen here
@@ -75,7 +104,7 @@ void loop()
   if ((digitalRead(2) == HIGH) && keyA == OFF)
   {
     keyA = ON;
-    Keyboard.write(65); // A
+    Keyboard.write(83); // S
   }
   if (digitalRead(2) == LOW)
   {
@@ -85,7 +114,7 @@ void loop()
   if ((digitalRead(3) == HIGH) && keyB == OFF)
   {
     keyB = ON;
-    Keyboard.write(68); // D
+    Keyboard.write(87); // W
   }
   if (digitalRead(3) == LOW)
   {
@@ -95,7 +124,7 @@ void loop()
   if ((digitalRead(4) == HIGH) && keyX == OFF)
   {
     keyX = ON;
-    Keyboard.write(74); // J
+    Keyboard.write(75); // K
   }
   if (digitalRead(4) == LOW)
   {
@@ -105,7 +134,7 @@ void loop()
   if ((digitalRead(5) == HIGH) && keyY == OFF)
   {
     keyY = ON;
-    Keyboard.write(76); // L
+    Keyboard.write(73); // I
   }
   if (digitalRead(5) == LOW)
   {
