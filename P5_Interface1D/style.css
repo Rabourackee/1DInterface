@@ -1,17 +1,82 @@
-/* style.css */
-
+/* Base HTML and body styles */
 html, body {
-    height: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+/* Base body styles - black background */
+body {
+  background-color: #000;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* NEW: Container for crowd pixels */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* NEW: Basic style for crowd pixels that simulate audience */
+.crowd-pixel {
+  position: absolute;
+  width: 20px;  /* Same size as game pixels */
+  height: 20px;
+  z-index: -1;
+  border-radius: 2px;
+  --base-opacity: 0.7; /* Default value, will be overridden in JS */
+  transition: background-color 0.5s ease; /* Smooth transition for color changes */
+}
+
+/* NEW: Animation keyframes for blinking effect */
+@keyframes blink1 {
+  0%, 100% { opacity: calc(var(--base-opacity) * 0.6); }
+  50% { opacity: var(--base-opacity); }
+}
+
+@keyframes blink2 {
+  0%, 100% { opacity: calc(var(--base-opacity) * 0.7); }
+  50% { opacity: var(--base-opacity); }
+}
+
+@keyframes blink3 {
+  0%, 100% { opacity: calc(var(--base-opacity) * 0.5); }
+  50% { opacity: var(--base-opacity); }
+}
+
+/* NEW: Add stronger glow effect around the game canvas */
+canvas {
+  box-shadow: 0 0 40px rgba(255, 0, 0, 0.5), 
+              0 0 40px rgba(0, 0, 255, 0.5);
+  border-radius: 5px;
+}
+
+/* NEW: Create stronger pulsing animation for the canvas glow */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 40px rgba(255, 0, 0, 0.5), 
+                0 0 40px rgba(0, 0, 255, 0.5);
   }
-  
-  body {
-    background-color: #333;
-    margin: 0;
-    display: flex;
-  
-    /* This centers our sketch horizontally. */
-    justify-content: center;
-  
-    /* This centers our sketch vertically. */
-    align-items: center;
+  50% {
+    box-shadow: 0 0 60px rgba(255, 0, 0, 0.8), 
+                0 0 60px rgba(0, 0, 255, 0.8);
   }
+  100% {
+    box-shadow: 0 0 40px rgba(255, 0, 0, 0.5), 
+                0 0 40px rgba(0, 0, 255, 0.5);
+  }
+}
+
+/* NEW: Apply the pulse animation to the canvas */
+canvas {
+  animation: pulse 3s infinite;
+}

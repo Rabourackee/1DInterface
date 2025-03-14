@@ -1,6 +1,8 @@
+// const audio1 = new Audio('P5_Interface1D\Project_14.mp3');
+// audio1.loop = true; // Enable looping
+// audio1.play();
 
 // This is where your state machines and game logic lives
-
 
 class Controller {
 
@@ -20,6 +22,7 @@ class Controller {
 
             // This is the main game state, where the playing actually happens
             case "PLAY":
+                //audio1.play();
 
                 // clear screen at frame rate so we always start fresh      
                 display.clear();
@@ -173,7 +176,8 @@ class Controller {
                 //target.position = parseInt(random(1,displaySize));
 
                 //light up w/ winner color by populating all pixels in buffer with their color
-                display.setAllPixels(score.winner);                    
+                display.setAllPixels(score.winner); 
+                if (typeof createVictoryCelebration === 'function') { createVictoryCelebration(score.winner); }
 
                 break;
 
@@ -184,48 +188,117 @@ class Controller {
     }
 }
 
+const synth1 = new Tone.Synth({
+    oscillator: { type: "sine" }
+    }).toDestination();
 
+const synth2 = new Tone.Synth({
+    oscillator: { type: "square" }
+    }).toDestination();
+
+const synth3 = new Tone.Synth({
+    oscillator: { type: "sawtooth" }
+    }).toDestination();
 
 
 // This function gets called when a key on the keyboard is pressed
 function keyPressed() {
+    //create a synth and connect it to the main output (your speakers)
 
     // Move player one to the left if letter A is pressed
     if (key == 'A' || key == 'a') {
         playerOne.move(-1);
+        synth1.triggerAttackRelease(tones[playerOne.position+12], "8n");
+
+
+        // Set the values you want to send (each between 0 and 6)
+        let led1 = int(map(playerOne.position, 0, 40, 0, 6))+1; // Example value for the first LED strip
+        let led2 = int(map(displaySize-playerTwo.position, 0, 40, 0, 6))+1; // Example value for the first LED strip
+        // Build the string to send (numbers separated by a space, ending with a newline)
+        let outStr = led1 + " " + led2 + "\n";
+        sendSerialData(outStr);
+        console.log("Sent to Arduino: " + outStr);
       }
     
     // And so on...
     if (key == 'D' || key == 'd') {
         playerOne.move(1);
+        synth1.triggerAttackRelease(tones[playerOne.position+12], "8n");
+
+
+        // Set the values you want to send (each between 0 and 6)
+        let led1 = int(map(playerOne.position, 0, 40, 0, 6))+1; // Example value for the first LED strip
+        let led2 = int(map(displaySize-playerTwo.position, 0, 40, 0, 6))+1; // Example value for the first LED strip       
+        // Build the string to send (numbers separated by a space, ending with a newline)
+        let outStr = led1 + " " + led2 + "\n";
+        sendSerialData(outStr);
+        console.log("Sent to Arduino: " + outStr);
     }    
 
     if (key == 'W' || key == 'w') {
+        synth3.triggerAttackRelease("C5", "32n");
         playerOne.attack = true;
     }    
 
     if (key == 'S' || key == 's') {
         playerOne.build = true;
+        synth3.triggerAttackRelease("C3", "8n");
     }    
 
     if (key == 'J' || key == 'j') {
     playerTwo.move(-1);
+    synth2.triggerAttackRelease(tones[displaySize-playerTwo.position], "8n");
+
+    // Set the values you want to send (each between 0 and 6)
+    let led1 = int(map(playerOne.position, 0, 40, 0, 6))+1; // Example value for the first LED strip
+    let led2 = int(map(displaySize-playerTwo.position, 0, 40, 0, 6))+1; // Example value for the first LED strip    
+    // Build the string to send (numbers separated by a space, ending with a newline)
+    let outStr = led1 + " " + led2 + "\n";
+    sendSerialData(outStr);
+    console.log("Sent to Arduino: " + outStr);
     }
     
     if (key == 'L' || key == 'l') {
     playerTwo.move(1);
+    synth2.triggerAttackRelease(tones[displaySize-playerTwo.position], "8n");
+
+    // Set the values you want to send (each between 0 and 6)
+    let led1 = int(map(playerOne.position, 0, 40, 0, 6))+1; // Example value for the first LED strip
+    let led2 = int(map(displaySize-playerTwo.position, 0, 40, 0, 6))+1; // Example value for the first LED strip
+    //  Build the string to send (numbers separated by a space, ending with a newline)
+    let outStr = led1 + " " + led2 + "\n";
+    sendSerialData(outStr);
+    console.log("Sent to Arduino: " + outStr);
     }
 
     if (key == 'I' || key == 'i') {
         playerTwo.attack = true;
+        synth3.triggerAttackRelease("C5", "32n");
     } 
 
     if (key == 'K' || key == 'k') {
         playerTwo.build = true;
+        synth3.triggerAttackRelease("C3", "8n");
     }    
     
     // When you press the letter R, the game resets back to the play state
     if (key == 'R' || key == 'r') {
     controller.gameState = "PLAY";
+    }
+
+  }
+
+
+
+
+
+  function sendSerialData(data) {
+    if (writer1 && writer2) {
+      // Encode and write the data to both ports
+      const encodedData = new TextEncoder().encode(data);
+      writer1.write(encodedData);
+      writer2.write(encodedData);
+    } else {
+      console.error("One or both serial ports are not open. Click the 'Connect to Both Arduinos' button.");
     }
   }
